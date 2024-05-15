@@ -1,83 +1,171 @@
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
+using System.Xml.Serialization;
+
 namespace NUnit_practice
 {
-    [TestFixture]
-    [DefaultFloatingPointTolerance(0.1)]
-    public class AssertionTests
+    public class SeleniumWebDriverTest
     {
+        private IWebDriver webDriver;
+        private readonly Dictionary<string, By> locatorMap = new Dictionary<string, By>();
+
+        public SeleniumWebDriverTest() {
+            locatorMap = new Dictionary<string, By>()
+            {
+                { "GDRP_do_not_consent_button",             By.CssSelector("button.fc-cta-do-not-consent") },
+                { "search_bar",                             By.CssSelector("form#searchform input") },
+                { "search_result_product_cards",            By.XPath("//article[contains(@class, 'product')]")},
+                { "search_result_product_title",            By.XPath("//article[contains(@class, 'product')]//h2")},
+                { "search_result_product_link",             By.XPath("//article[contains(@class, 'product')]//a")},
+                { "on_sale_sticker",                        By.CssSelector("div.product > span.onsale")},
+                { "product_card_title",                     By.CssSelector("h1.product_title")},
+                { "product_card_price_span",                By.CssSelector("p.price span.amount")},
+                { "search_page_title",                      By.CssSelector("h1.page-title")},
+                {"add_to_cart_button",                      By.CssSelector("form.cart button")},
+                { "navbar_cart_button",                     By.CssSelector("nav a[class*=cart]")},
+                { "cart_product_name_table_element",        By.CssSelector("td.product-name")},
+                { "cart_product_total_price_table_element", By.CssSelector("td.product-subtotal span.amount")}
+        };
+            
+        }
+
+        public By ProductCardLocatorByProductName(string productName) => By.XPath($"//a[contains(text(), '{productName}')]");
+        public By RelatedProductLocatorByProductName(string relatedProductName) => 
+            By.XPath($"//div[contains(@class, 'related products')]//*[contains(text(), '{relatedProductName}')]");
+
         [SetUp]
         public void Setup()
         {
-            Console.WriteLine("Test case started.");
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.PageLoadStrategy = PageLoadStrategy.None;
+            webDriver = new ChromeDriver(chromeOptions);
+            webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+            webDriver.Navigate().GoToUrl("https://practice.automationtesting.in/shop/");
+            WaitAndCloseGDPRPopup();
+            //IJavaScriptExecutor js = (IJavaScriptExecutor)webDriver;
         }
 
-        [Test]
-        public void IdenticalStringsTest()
+        private IWebElement FindElementWithWait(By selectedBy, uint waitTime)
         {
-            string str1 = "What a beautiful world!";
-            string str2 = "What a beautiful world!";
-            Assert.That(str1, Is.EqualTo(str2), $"String {str1} is not identical to string {str2}");
-            Assert.AreEqual(str1, str2, $"String {str1} is not identical to string {str2}");
+            WebDriverWait wait = new(webDriver, TimeSpan.FromSeconds(waitTime));
+            return wait.Until(e => e.FindElement(selectedBy));
         }
 
-        [Test]
-        public void IdenticalStringListsTest() {
-            string[] fruits1 = { "apple", "orange", "banana", "mango" };
-            string[] fruits2 = { "apple", "orange", "banana", "mango" };
-            Assert.That(fruits1, Is.EqualTo(fruits2), $"String list {fruits1} is not identical to string list {fruits2}");
-            CollectionAssert.AreEqual(fruits1, fruits2, $"String list {fruits1} is not identical to string list {fruits2}");
-        }
-
-        [Test]
-        public void StringListContainsElementTest()
+        private void WaitAndCloseGDPRPopup()
         {
-            string[] fruits = { "apple", "orange", "banana", "mango" };
-            string fruit = "banana";
-            Assert.That(fruits, Does.Contain(fruit), $"String list {fruits} does not contain fruit {fruit}");
-            Assert.Contains(fruit, fruits, $"String list {fruits} does not contain fruit {fruit}");
+            webDriver.FindElement(locatorMap["GDRP_do_not_consent_button"]).Click();
+        }
+
+        private void SearchForPhrase(string searchPhrase)
+        {
+            IWebElement searchForm = webDriver.FindElement(locatorMap["search_bar"]);
+            searchForm.SendKeys(searchPhrase + "\n");
+        }
+
+        private void CheckThatResultsContainTheSearchPhrase(string searchPhrase)
+        {
+            IReadOnlyList<IWebElement> htmlProductCards = webDriver.FindElements(locatorMap["search_result_product_cards"]);
+
+            foreach (IWebElement htmlProductCard in htmlProductCards)
+            {
+                IReadOnlyList<IWebElement> productLinks = htmlProductCard.FindElements(locatorMap["search_result_product_link"]);
+                Assert.That(productLinks, Is.Not.Empty);
+                IWebElement productLink = productLinks[0];
+                Assert.That(productLink.GetAttribute("href"), Does.StartWith("https://"));
+
+                
+                IWebElement productName = htmlProductCard.FindElement(locatorMap["search_result_product_title"]);
+                Assert.That(productName.Text, Does.Contain(searchPhrase));
+            }
+        }
+
+        private void ClickProductInSearchResult(string productName)
+        {
+            string selectedProductName = "Thinking in HTML";
+            IWebElement selectedProductCard = webDriver.FindElement(ProductCardLocatorByProductName(selectedProductName));
+            Actions actions = new(webDriver);
+            actions.MoveToElement(selectedProductCard);
+            actions.Click();
+            actions.Perform();
+        }
+
+        private void CheckThatSaleStickerIsDisplayed()
+        {
+            Assert.That(webDriver.FindElements(locatorMap["on_sale_sticker"]), Is.Not.Empty);
+        }
+
+        private void CheckThatOldAndNewPricesAreDisplayed()
+        {
+            IReadOnlyCollection<IWebElement> productPrices = webDriver.FindElements(locatorMap["product_card_price_span"]);
+            Assert.That(productPrices.Count, Is.EqualTo(2));
+        }
+
+        private void NavigateToRelatedProduct(string relatedProductName)
+        {
+            IWebElement relatedProductCart = webDriver.FindElement(RelatedProductLocatorByProductName(relatedProductName));
+            Actions actions = new(webDriver);
+            actions.MoveToElement(relatedProductCart);
+            actions.Perform();
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)webDriver;
+            relatedProductCart.Click();
+        }
+
+        private (string, string) GetProductNameAndPrice()
+        {
+            string titleDisplayedOnSite = webDriver.FindElement(locatorMap["product_card_title"]).Text;
+            string priceDisplayedOnSite = webDriver.FindElement(locatorMap["product_card_price_span"]).Text;
+            return (titleDisplayedOnSite, priceDisplayedOnSite);
+        }
+
+        private void AddProductToCart()
+        {
+            webDriver.FindElement(locatorMap["add_to_cart_button"]).Click();
+        }
+
+        private void NavigateToCart()
+        {
+            webDriver.FindElement(locatorMap["navbar_cart_button"]).Click();
+        }
+
+        private void CheckThatProductNameAndPriceMatch(string productNameOnCard, string productPriceOnCard)
+        {
+            Assert.That(webDriver.FindElement(locatorMap["cart_product_name_table_element"]).Text, Is.EqualTo(productNameOnCard));
+            Assert.That(webDriver.FindElement(locatorMap["cart_product_total_price_table_element"]).Text, Is.EqualTo(productPriceOnCard));
+        }
+
+        private void CheckThatTitleContainsSearchPhrase(string searchPhrase)
+        {
+            Assert.That(webDriver.FindElement(locatorMap["search_page_title"]).Text, Does.Contain(searchPhrase));
+            Assert.That(webDriver.Title, Does.Contain(searchPhrase));
         }
 
         [Test]
-        public void IntegerGreaterThanTest() {
-            int a = 10, b = 5;
-            Assert.That(a, Is.GreaterThan(b), $"Integer {a} is not greater than {b}");
-            Assert.Greater(a, b, $"Integer {a} is not greater than {b}");
-        }
-
-        [Test, Pairwise]
-        public void SomeArithmeticTest(
-             [Values(-4.3 ,-1, 0, 3.5, 15)] double a,
-             [Values(-8, -3.3, 0, 1, 4.5)] double b,
-             [Values(-12.9, -2, 0, 14, 23.1)] double c)
+        public void ShoppingFlowE2E()
         {
-            Assert.That(Math.Abs(a + b + c), Is.LessThanOrEqualTo(Math.Abs(a) + Math.Abs(b) + Math.Abs(c)), 
-                $"The absolute value of the sum is greater than the sum of absolute values for the following integers: {a}, {b}, {c}");
-            Assert.LessOrEqual(Math.Abs(a + b + c), Math.Abs(a) + Math.Abs(b) + Math.Abs(c),
-                $"The absolute value of the sum is greater than the sum of absolute values for the following integers: {a}, {b}, {c}");
-        }
+            string searchPhrase = "HTML";
+            SearchForPhrase(searchPhrase);
+            CheckThatTitleContainsSearchPhrase(searchPhrase);
+            CheckThatResultsContainTheSearchPhrase(searchPhrase);
 
-        [Test]
-        public void DefaultFloatingPointToleranceTestFromFixture()
-        {
-            float a = 2.3f;
-            float b = 2.34f;
-            Assert.That(a, Is.EqualTo(b));
-            Assert.That(a, Is.Not.EqualTo(b + 1));
-        }
+            ClickProductInSearchResult("Thinking in HTML");
+            CheckThatSaleStickerIsDisplayed();
+            CheckThatOldAndNewPricesAreDisplayed();
 
-        [Test]
-        [DefaultFloatingPointTolerance(2)]
-        public void DefaultFloatingPointToleranceTest()
-        {
-            float a = 2.3f;
-            float b = 3.82f;
-            Assert.That(a, Is.EqualTo(b));
-            Assert.That(a, Is.Not.EqualTo(b + 1));
+            string html5WebAppDevelopmentTitle = "HTML5 WebApp Develpment";
+            NavigateToRelatedProduct(html5WebAppDevelopmentTitle);
+
+            (string productNameOnCard, string productPriceOnCard) = GetProductNameAndPrice();
+            AddProductToCart();
+
+            NavigateToCart();
+            CheckThatProductNameAndPriceMatch(productNameOnCard, productPriceOnCard);
         }
 
         [TearDown]
         public void TearDown()
         {
-            Console.WriteLine("Test case finished.");
+            webDriver.Close();
         }
     }
 }
