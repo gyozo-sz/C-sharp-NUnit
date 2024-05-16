@@ -33,6 +33,19 @@ namespace NUnit_practice
         public By RelatedProductLocatorByProductName(string relatedProductName) => 
             By.XPath($"//div[contains(@class, 'related products')]//*[contains(text(), '{relatedProductName}')]");
 
+        private Actions _getActions;
+        private Actions GetActions
+        {
+            get 
+            {
+                if (_getActions == null)
+                {
+                    _getActions = new(webDriver);
+                }
+                return _getActions;
+            }
+        } 
+
         [SetUp]
         public void Setup()
         {
@@ -84,10 +97,7 @@ namespace NUnit_practice
         {
             string selectedProductName = "Thinking in HTML";
             IWebElement selectedProductCard = webDriver.FindElement(ProductCardLocatorByProductName(selectedProductName));
-            Actions actions = new(webDriver);
-            actions.MoveToElement(selectedProductCard);
-            actions.Click();
-            actions.Perform();
+            GetActions.MoveToElement(selectedProductCard).Click().Perform();
         }
 
         private void CheckThatSaleStickerIsDisplayed()
@@ -104,7 +114,8 @@ namespace NUnit_practice
         private void NavigateToRelatedProduct(string relatedProductName)
         {
             IWebElement relatedProductCart = webDriver.FindElement(RelatedProductLocatorByProductName(relatedProductName));
-            GetActions.MoveToElement(relatedProductCart).Click().Perform();
+            GetActions.MoveToElement(relatedProductCart).Perform();
+            relatedProductCart.Click();
         }
 
         private (string, string) GetProductNameAndPrice()
