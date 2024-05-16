@@ -104,11 +104,7 @@ namespace NUnit_practice
         private void NavigateToRelatedProduct(string relatedProductName)
         {
             IWebElement relatedProductCart = webDriver.FindElement(RelatedProductLocatorByProductName(relatedProductName));
-            Actions actions = new(webDriver);
-            actions.MoveToElement(relatedProductCart);
-            actions.Perform();
-            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)webDriver;
-            relatedProductCart.Click();
+            GetActions.MoveToElement(relatedProductCart).Click().Perform();
         }
 
         private (string, string) GetProductNameAndPrice()
