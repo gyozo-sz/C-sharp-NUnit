@@ -20,19 +20,18 @@ namespace NUnit_practice
         [SetUp]
         public void Setup()
         {
-            webDriver = new ChromeDriver();
+            var chromeOptions = new ChromeOptions() { PageLoadStrategy = PageLoadStrategy.None };
+            webDriver = new ChromeDriver(chromeOptions);
+            PageContext context = new(webDriver);
+
+            myAccountPage = new MyAccountPage(context);
+            dataConsentPage = new DataConsentPage(context);
 
             webDriver.Navigate().GoToUrl(URL);
-
-            myAccountPage = new MyAccountPage();
-            dataConsentPage = new DataConsentPage();
-            PageFactory.InitElements(webDriver, myAccountPage);
-            PageFactory.InitElements(webDriver, dataConsentPage);
-
-            WaitAndCloseGDPRPopup();
+            CloseGDPRPopup();
         }
 
-        private void WaitAndCloseGDPRPopup()
+        private void CloseGDPRPopup()
         {
             dataConsentPage.RejectDataUse();
         }
@@ -56,7 +55,7 @@ namespace NUnit_practice
         [Test]
         public void RememberMeTest()
         {
-            bool isRememberMeActive = myAccountPage.IsRememberMeChecked();
+            bool? isRememberMeActive = myAccountPage.IsRememberMeChecked();
             myAccountPage.ClickRememberMeCheckbox();
             Assert.That(myAccountPage.IsRememberMeChecked(), Is.EqualTo(!isRememberMeActive));
             myAccountPage.ClickRememberMeCheckbox();
