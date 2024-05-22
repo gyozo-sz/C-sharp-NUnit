@@ -1,3 +1,4 @@
+using NUnit_practice.PageObjects;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
@@ -19,10 +20,7 @@ namespace NUnit_practice
         [SetUp]
         public void Setup()
         {
-            var chromeOptions = new ChromeOptions();
-            chromeOptions.PageLoadStrategy = PageLoadStrategy.None;
-            webDriver = new ChromeDriver(chromeOptions);
-            webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            webDriver = new ChromeDriver();
 
             webDriver.Navigate().GoToUrl(URL);
 
