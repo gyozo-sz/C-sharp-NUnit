@@ -1,6 +1,6 @@
 ﻿using SeleniumExtras.PageObjects;
 
-namespace NUnit_practice
+namespace NUnit_practice.PageObjects
 {
     internal class MyAccountPage
     {

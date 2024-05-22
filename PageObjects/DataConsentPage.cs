@@ -1,7 +1,7 @@
 ﻿using NUnit_practice.PageObjects;
 using SeleniumExtras.PageObjects;
 
-namespace NUnit_practice
+namespace NUnit_practice.PageObjects
 {
     internal class DataConsentPage
     {
