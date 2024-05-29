@@ -4,14 +4,13 @@ Feature: TextBox
 
 A short summary of the feature
 
-#Background: 
-#	Given I navigated to the Text Box page in the Elements section
+Background: 
+	Given I navigated to the Text Box section in the Elements category
 
-#@CurrentAddress
-#Scenario Outline: Submit text box values 
-#	When I enter <address> into the Current Address Text field
-#		And Click the 'Submit' button
-#	Then Result table appears echoing the entered data
-#Examples:
-#	| address					  |
-#	| 'London, 221B Baker Street' |
+Scenario: Submit text box values 
+	When I enter the following data into the text fields
+	| FullName        | Email               | CurrentAddress  | PermanentAddress          |
+	| Sherlock Holmes | sherlock@holmes.com | London, Big Ben | London, 221B Baker Street |
+		And Click the 'Submit' button
+	Then Output table appears echoing the entered data
+	

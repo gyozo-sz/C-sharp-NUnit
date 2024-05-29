@@ -11,14 +11,12 @@
     public class ScenarioHooks
     {
         private readonly IObjectContainer _container;
-        private const string DefaultPage = "https://demoqa.com/";
+        public const string DefaultPage = "https://demoqa.com/";
 
         public ScenarioHooks(IObjectContainer objectContainer)
         {
             _container = objectContainer;
-            //_container.RegisterInstanceAs(_driver, "Driver");
             _container.RegisterInstanceAs(new PageContext(), "Context");
-            //_container.RegisterInstanceAs<IWebDriver>(_driver, "Driver");
         }
 
         [BeforeScenario(Order = 1)]

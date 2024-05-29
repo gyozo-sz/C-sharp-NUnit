@@ -20,26 +20,24 @@ namespace NUnit_practice.Features.Elements
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("TextBox")]
-    [NUnit.Framework.CategoryAttribute("Elements")]
-    [NUnit.Framework.CategoryAttribute("TextBox")]
-    public partial class TextBoxFeature
+    [NUnit.Framework.DescriptionAttribute("Windows")]
+    [NUnit.Framework.CategoryAttribute("Windows")]
+    public partial class WindowsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = new string[] {
-                "Elements",
-                "TextBox"};
+                "Windows"};
         
-#line 1 "TextBox.feature"
+#line 1 "Windows.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Elements", "TextBox", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Elements", "Windows", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,23 +75,26 @@ namespace NUnit_practice.Features.Elements
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 7
-#line hidden
-#line 8
- testRunner.Given("I navigated to the Text Box section in the Elements category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-        }
-        
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Submit text box values")]
-        public void SubmitTextBoxValues()
+        [NUnit.Framework.DescriptionAttribute("Handling the case when new window is opened")]
+        [NUnit.Framework.CategoryAttribute("NewWindow")]
+        [NUnit.Framework.CategoryAttribute("NewTab")]
+        [NUnit.Framework.TestCaseAttribute("New Tab", null)]
+        [NUnit.Framework.TestCaseAttribute("New Window", null)]
+        public void HandlingTheCaseWhenNewWindowIsOpened(string buttonLabel, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] @__tags = new string[] {
+                    "NewWindow",
+                    "NewTab"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Submit text box values", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 10
+            argumentsOfScenario.Add("buttonLabel", buttonLabel);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Handling the case when new window is opened", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -103,27 +104,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
-this.FeatureBackground();
+#line 9
+ testRunner.Given("I navigated to the Browser Windows section in the Windows category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                            "FullName",
-                            "Email",
-                            "CurrentAddress",
-                            "PermanentAddress"});
-                table1.AddRow(new string[] {
-                            "Sherlock Holmes",
-                            "sherlock@holmes.com",
-                            "London, Big Ben",
-                            "London, 221B Baker Street"});
+#line 10
+ testRunner.When(string.Format("I click the {0} button", buttonLabel), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 11
- testRunner.When("I enter the following data into the text fields", ((string)(null)), table1, "When ");
-#line hidden
-#line 14
-  testRunner.And("Click the \'Submit\' button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 15
- testRunner.Then("Output table appears echoing the entered data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sample page is opened in new window", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

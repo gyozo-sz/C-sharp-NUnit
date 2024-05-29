@@ -1,11 +1,14 @@
 ﻿using BoDi;
+using NUnit_practice.DataClasses;
+using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
 
-namespace NUnit_practice.PageObjects
+namespace NUnit_practice.PageObjects.Elements
 {
-    internal class TextBoxPage : PageObjectBase
+    internal class TextBoxPage : CategoryPage
     {
-        public TextBoxPage(IObjectContainer objectContainer) : base(objectContainer) {
+        public TextBoxPage(IObjectContainer objectContainer, ScenarioContext scenarioContext) : base(objectContainer, scenarioContext)
+        {
             var context = objectContainer.Resolve<PageContext>("Context");
             PageFactory.InitElements(context.Driver, this);
         }
@@ -26,13 +29,13 @@ namespace NUnit_practice.PageObjects
         [FindsBy(How = How.CssSelector, Using = "label#currentAddress-label")]
         public IWebElement? CurrentAddressFieldLabel { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "input#currentAddress")]
+        [FindsBy(How = How.CssSelector, Using = "textarea#currentAddress")]
         public IWebElement? CurrentAddressTextField { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "label#permanentAddress-label")]
         public IWebElement? PermanentAddressTextFieldLabel { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "input#permanentAddress")]
+        [FindsBy(How = How.CssSelector, Using = "textarea#permanentAddress")]
         public IWebElement? PermanentAddressTextField { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "button#submit")]
@@ -84,5 +87,30 @@ namespace NUnit_practice.PageObjects
             }
             return false;
         }
-    }   
+
+        public void EnterDataInTextFields(TextBoxData data)
+        {
+            EnterName(data.FullName);
+            EnterEmail(data.Email);
+            EnterCurrentAddress(data.CurrentAddress);
+            EnterPermanentAddress(data.PermanentAddress);
+        }
+
+        private string ParseOutputTableRow(string outputTableRow)
+        {
+            return outputTableRow.Substring(outputTableRow.IndexOf(":") + 1);
+        }
+
+        public TextBoxData GetOutputTableContents()
+        {
+            TextBoxData data = new()
+            {
+                FullName = ParseOutputTableRow(OutputName!.Text),
+                Email = ParseOutputTableRow(OutputEmail!.Text),
+                CurrentAddress = ParseOutputTableRow(OutputCurrentAddress!.Text),
+                PermanentAddress = ParseOutputTableRow(OutputPermanentAddress!.Text)
+            };
+            return data;
+        }
+    }
 }

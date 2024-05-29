@@ -1,19 +1,19 @@
 ﻿using BoDi;
+using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TechTalk.SpecFlow;
 
 namespace NUnit_practice.PageObjects
 {
     internal class HomePage : PageObjectBase
     {
-        IObjectContainer _container;
-
-        public HomePage(IObjectContainer objectContainer) : base(objectContainer) {
-            _container = objectContainer;
+        public HomePage(IObjectContainer objectContainer, ScenarioContext scenarioContext) : base(objectContainer, scenarioContext) 
+        {
             var context = objectContainer.Resolve<PageContext>("Context");
             PageFactory.InitElements(context.Driver, this);
         }
@@ -21,15 +21,15 @@ namespace NUnit_practice.PageObjects
         [FindsBy(How = How.XPath, Using = "//div[contains(@class, 'card-body')]/h5[contains(text(), 'Elements')]")]
         public IWebElement? ElementsCard { get; set; }
 
-        private By MenuCard(string title)
+        private static By MenuCard(string title)
         {
             return By.XPath($"//h5[contains(text(), '{title}')]//ancestor::div[contains(@class, 'top-card')]");
         }
 
-        public ElementsPage SelectMenuCard(string title)
+        public CategoryPage SelectMenuCard(string title)
         {
             ClickElement(MenuCard(title));
-            return new ElementsPage(_container);
+            return new CategoryPage(_container, _scenarioContext);
         }
 
     }

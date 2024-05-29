@@ -1,49 +1,37 @@
 ﻿using BoDi;
 using NUnit_practice.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TechTalk.SpecFlow;
+using NUnit_practice.PageObjects.Utils;
 
 namespace NUnit_practice.Steps
 {
     [Binding]
     public class NavigationStepDefinitions
     {
-        private PageContext context;
-        private NavigationPage navigationPage;
-        private TextBoxPage textBoxPage;
-        private HomePage homePage;
-        private ElementsPage elementsPage;
+        private readonly NavigationPage navigationPage;
+        private readonly HomePage homePage;
 
-        public NavigationStepDefinitions(IObjectContainer objectContainer)
+        public NavigationStepDefinitions(IObjectContainer objectContainer, ScenarioContext scenarioContext)
         {
-            context = objectContainer.Resolve<PageContext>("Context");
-            homePage = new HomePage(objectContainer);
-            navigationPage = new NavigationPage(objectContainer);
+            homePage = new HomePage(objectContainer, scenarioContext);
+            navigationPage = new NavigationPage(objectContainer, scenarioContext);
         }
 
-        [Given(@"I navigated to the (.*) page in the (.*) section")]
-        public void GivenINavigatedToTheTextBoxPageInTheElementsSection(string pageTitle, string sectionTitle)
+        [Given(@"I navigated to the (.*) section in the (.*) category")]
+        [When(@"I navigate to the (.*) section in the (.*) category")]
+        public void GivenINavigatedToASectionInCategory(string sectionTitle, string categoryTitle)
         {
-            navigationPage.OpenTextBoxPage();
+            if (homePage.IsHomePage())
+            {
+                homePage.SelectMenuCard(categoryTitle);
+            }
+            navigationPage.NavigateToSectionInCategory(categoryTitle, sectionTitle);
         }
 
 
-        [Given(@"I am on the Text Box Page")]
+        [Given(@"I am on the Text Box section")]
         public void GivenIAmOnTheTextBoxPage()
         {
-            elementsPage = homePage.SelectMenuCard("Elements");
-            textBoxPage = elementsPage.NavigateToTextBoxPage();
+            GivenINavigatedToASectionInCategory("Text Box", "Elements");
         }
-
-        [Then(@"I see the Email input field")]
-        public void ThenISeeTheEmailInputField()
-        {
-            Assert.That(textBoxPage.IsEmailFieldVisible(), Is.True);
-        }
-
     }
 }
