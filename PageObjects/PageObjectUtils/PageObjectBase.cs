@@ -86,7 +86,6 @@ namespace NUnit_practice.PageObjects.Utils
                 IWebElement element = elements.Last();
                 js.ExecuteScript(@"var el = arguments[0];
                     el.parentNode.removeChild(el)", element);
-                //js.ExecuteScript("arguments[0].style.visibility='hidden'", element);
                 elements = Context.Driver.FindElements(AdsLocator);
             }
         }
@@ -96,6 +95,18 @@ namespace NUnit_practice.PageObjects.Utils
             IJavaScriptExecutor js = (IJavaScriptExecutor)Context.Driver;
             js.ExecuteScript($"window.scrollBy(0,{scrollAmount})");
         }
+
+        public static ClickType ParseClickType(string clickType)
+        {
+            return (clickType) switch
+            {
+                "left" => ClickType.LeftClick,
+                "double" => ClickType.DoubleLeftClick,
+                "right" => ClickType.RightClick,
+                _ => throw new ArgumentException($"Unknown click type: {clickType}"),
+            };
+        }
+
         public void Click(IWebElement? element, ClickType clickType)
         {
             switch (clickType)
@@ -112,6 +123,13 @@ namespace NUnit_practice.PageObjects.Utils
                 default:
                     throw new ArgumentException($"Unknown click type: {Enum.GetName(typeof(ClickType), clickType)}");
             }
+        }
+
+        public ClickType Click(IWebElement? element, string clickTypeString)
+        {
+            ClickType clickType = ParseClickType(clickTypeString);
+            Click(element, clickType);
+            return clickType;
         }
 
         public IWebElement? GetButtonByText(string buttonText)

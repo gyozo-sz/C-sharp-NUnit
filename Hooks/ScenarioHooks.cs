@@ -1,11 +1,7 @@
-﻿namespace NUnit_practice.Hooks
-{
-    using BoDi;
-    using NUnit_practice.PageObjects;
-    using System.Collections.Generic;
-    using System.Linq;
-    using TechTalk.SpecFlow;
+﻿using BoDi;
 
+namespace NUnit_practice.Hooks
+{
     // For additional details on SpecFlow hooks see http://go.specflow.org/doc-hooks
     [Binding]
     public class ScenarioHooks

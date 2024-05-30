@@ -7,24 +7,24 @@ namespace NUnit_practice.Steps
     [Binding]
     public class NavigationStepDefinitions
     {
-        private readonly NavigationPage navigationPage;
-        private readonly HomePage homePage;
+        private readonly NavigationPage _navigationPage;
+        private readonly HomePage _homePage;
 
         public NavigationStepDefinitions(IObjectContainer objectContainer, ScenarioContext scenarioContext)
         {
-            homePage = new HomePage(objectContainer, scenarioContext);
-            navigationPage = new NavigationPage(objectContainer, scenarioContext);
+            _homePage = new HomePage(objectContainer, scenarioContext);
+            _navigationPage = new NavigationPage(objectContainer, scenarioContext);
         }
 
         [Given(@"I navigated to the (.*) section in the (.*) category")]
         [When(@"I navigate to the (.*) section in the (.*) category")]
         public void GivenINavigatedToASectionInCategory(string sectionTitle, string categoryTitle)
         {
-            if (homePage.IsHomePage())
+            if (_homePage.IsHomePage())
             {
-                homePage.SelectMenuCard(categoryTitle);
+                _homePage.SelectMenuCard(categoryTitle);
             }
-            navigationPage.NavigateToSectionInCategory(categoryTitle, sectionTitle);
+            _navigationPage.NavigateToSectionInCategory(categoryTitle, sectionTitle);
         }
 
 

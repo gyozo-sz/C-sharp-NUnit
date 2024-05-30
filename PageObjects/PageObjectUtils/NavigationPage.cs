@@ -5,7 +5,8 @@ namespace NUnit_practice.PageObjects.Utils
 {
     internal class NavigationPage : PageObjectBase
     {
-        public NavigationPage(IObjectContainer objectContainer, ScenarioContext scenarioContext) : base(objectContainer, scenarioContext)
+        public NavigationPage(IObjectContainer objectContainer, ScenarioContext scenarioContext) 
+            : base(objectContainer, scenarioContext)
         {
             var context = objectContainer.Resolve<PageContext>("Context");
             PageFactory.InitElements(context.Driver, this);

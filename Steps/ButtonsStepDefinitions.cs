@@ -7,49 +7,31 @@ namespace NUnit_practice.Steps
     [Binding]
     public class ButtonsStepDefinitions
     {
-        private readonly ButtonsPage buttonsPage;
-        private readonly List<ClickType> performedClicks;
+        private readonly ButtonsPage _buttonsPage;
+        private readonly List<ClickType> _performedClicks;
 
         public ButtonsStepDefinitions(IObjectContainer objectContainer, ScenarioContext scenarioContext)
         {
-            buttonsPage = new ButtonsPage(objectContainer, scenarioContext);
-            performedClicks = new();
+            _buttonsPage = new ButtonsPage(objectContainer, scenarioContext);
+            _performedClicks = new();
         }
 
         [When(@"I (left|double|right) click the (.*) Button")]
-        public ClickType WhenIClickButton(string clickType, string buttonText)
+        public void WhenIClickButton(string clickType, string buttonText)
         {
-            buttonsPage.HideAds();
-            IWebElement? button = buttonsPage.GetButtonByText(buttonText);
-            ClickType performedClick;
-            switch (clickType)
-            {
-                case "left":
-                    buttonsPage.ClickElement(button);
-                    performedClick = ClickType.LeftClick;
-                    break;
-                case "double":
-                    buttonsPage.ClickElement(button, ClickType.DoubleLeftClick);
-                    performedClick = ClickType.DoubleLeftClick;
-                    break;
-                case "right":
-                    buttonsPage.ClickElement(button, ClickType.RightClick);
-                    performedClick = ClickType.RightClick;
-                    break;
-                default:
-                    throw new ArgumentException($"Unknown click type: {clickType}");
-            }
-            performedClicks.Add(performedClick);
-            return performedClick;
+            _buttonsPage.HideAds();
+            IWebElement? button = _buttonsPage.GetButtonByText(buttonText);
+            ClickType performedClick = _buttonsPage.Click(button, clickType);
+            _performedClicks.Add(performedClick);
         }
 
         [Then(@"Messages? with text You have done a click (?:is|are) displayed")]
         public void ThenMessageWithTextYouHaveDoneAClickIsDisplayed()
         {
-            foreach (ClickType clickType in performedClicks)
+            foreach (ClickType clickType in _performedClicks)
             {
                 string expectedMessage = ButtonsPage.GetExpectedButtonMessage(clickType);
-                Assert.That(buttonsPage.GetActualButtonMessage(clickType), Is.EqualTo(expectedMessage));
+                Assert.That(_buttonsPage.GetActualButtonMessage(clickType), Is.EqualTo(expectedMessage));
             }
             
             

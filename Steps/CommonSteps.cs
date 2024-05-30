@@ -6,7 +6,7 @@ namespace NUnit_practice.Steps
     [Binding]
     public class CommonSteps
     {
-        IObjectContainer _container;
+        private readonly IObjectContainer _container;
         public CommonSteps(IObjectContainer container)
         {
             _container = container;
