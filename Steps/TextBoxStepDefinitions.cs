@@ -1,4 +1,3 @@
-using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BoDi;
 using NUnit_practice.DataClasses;
@@ -18,24 +17,10 @@ namespace NUnit_practice.Steps
             _textBoxData = new();
         }
 
-        [When(@"I enter '(.*)' into the (.*) Text field")]
-        public void WhenIEnterTextIntoTheTextField(string input, string textFieldLabel)
-        {
-            _textBoxPage.EnterName("Sherlock Holmes");
-            Thread.Sleep(5000);
-        }
-
-        // TODO: Move to Common Steps
         [When(@"Click the (.*) button")]
         public void WhenClickTheSubmitButton(string buttonLabel)
         {
-            _textBoxPage.ClickSubmitButton();
-        }
-
-        [Then(@"Result table appears echoing the entered data")]
-        public void ThenResultTableAppearsEchoingTheEnteredData()
-        {
-            Assert.That(_textBoxPage.OutputName!.Text, Is.Not.Empty);
+            _textBoxPage.ClickButtonByText(buttonLabel);
         }
 
         [Then(@"I see the Email input field")]

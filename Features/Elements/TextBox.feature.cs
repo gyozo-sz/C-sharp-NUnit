@@ -120,7 +120,7 @@ this.FeatureBackground();
  testRunner.When("I enter the following data into the text fields", ((string)(null)), table1, "When ");
 #line hidden
 #line 14
-  testRunner.And("Click the \'Submit\' button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Click the Submit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
  testRunner.Then("Output table appears echoing the entered data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

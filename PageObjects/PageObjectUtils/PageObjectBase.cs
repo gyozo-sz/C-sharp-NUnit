@@ -2,7 +2,6 @@
 using NUnit_practice.DataClasses;
 using NUnit_practice.Hooks;
 using OpenQA.Selenium.Support.UI;
-using TechTalk.SpecFlow;
 
 namespace NUnit_practice.PageObjects.Utils
 {

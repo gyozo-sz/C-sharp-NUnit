@@ -1,11 +1,6 @@
 ﻿using BoDi;
 using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NUnit_practice.PageObjects.WindowsCategory
 {
@@ -27,7 +22,6 @@ namespace NUnit_practice.PageObjects.WindowsCategory
         {
             ClickElement(NewTabButton);
             SwitchToNewTabOrWindow(GetWindowHandle());
-            Thread.Sleep(1000);
             return new(_container, _scenarioContext);
         }
     }

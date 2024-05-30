@@ -1,7 +1,6 @@
 ﻿using BoDi;
 using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
-using TechTalk.SpecFlow;
 
 namespace NUnit_practice.PageObjects.WindowsCategory
 {

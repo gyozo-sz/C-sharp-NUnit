@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NUnit_practice.DataClasses
 {
@@ -29,6 +24,11 @@ namespace NUnit_practice.DataClasses
             PermanentAddress = "";
         }
 
+        public override int GetHashCode()
+        {
+            return (FullName + Email + PermanentAddress + CurrentAddress).GetHashCode();
+        }
+
         public bool Equals(TextBoxData? other)
         {
             if (other == null)
@@ -43,6 +43,11 @@ namespace NUnit_practice.DataClasses
             }
                 
             return true;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as TextBoxData);
         }
     }
 }

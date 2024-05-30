@@ -1,5 +1,4 @@
 ﻿using BoDi;
-using TechTalk.SpecFlow;
 
 namespace NUnit_practice.Steps
 {
