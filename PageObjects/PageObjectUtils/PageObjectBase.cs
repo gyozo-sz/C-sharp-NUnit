@@ -84,7 +84,6 @@ namespace NUnit_practice.PageObjects.Utils
             while (elements.Count != 0)
             {
                 IWebElement element = elements.Last();
-                Console.WriteLine($"Hidden element: {element}");
                 js.ExecuteScript(@"var el = arguments[0];
                     el.parentNode.removeChild(el)", element);
                 //js.ExecuteScript("arguments[0].style.visibility='hidden'", element);

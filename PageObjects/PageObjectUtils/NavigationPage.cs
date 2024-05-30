@@ -68,8 +68,6 @@ namespace NUnit_practice.PageObjects.Utils
         public NavigationPage NavigateToSectionInCategory(string categoryTitle, string sectionTitle)
         {
             ExpandCategoryMenu(categoryTitle);
-            Console.WriteLine(categoryTitle);
-            Console.WriteLine(sectionTitle);
             ClickElement(SectionMenuItem(sectionTitle));
             return this;
         }

@@ -11,7 +11,6 @@ namespace NUnit_practice
     {
         public PageContext()
         {
-            Console.WriteLine("Page Context created");
             Driver = new ChromeDriver();
             Actions = new Actions(Driver);
         }
