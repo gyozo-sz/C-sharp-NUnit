@@ -17,6 +17,11 @@ namespace NUnit_practice
         readonly string validEmail = "some@email.com";
         readonly string validPassword = ")3jf8BdjL2a$smm";
 
+        const string LostPasswordText = "Lost your password?";
+        const string LoginButtonText = "Login";
+        const string RememberMeLabelText = "Remember me";
+        const string RegisterButtonText = "Register";
+
         [SetUp]
         public void Setup()
         {
@@ -37,22 +42,6 @@ namespace NUnit_practice
         }
 
         [Test]
-        public void LoginUsernameFieldTest()
-        {
-            string username = "some@username.com";
-            myAccountPage.EnterLoginUsername(username);
-            Assert.That(myAccountPage.GetLoginUsername(), Is.EqualTo(username));
-        }
-
-        [Test]
-        public void LoginPasswordFieldTest()
-        {
-            string password = "pass#23@{a.";
-            myAccountPage.EnterLoginPassword(password);
-            Assert.That(myAccountPage.GetLoginPassword(), Is.EqualTo(password));
-        }
-
-        [Test]
         public void RememberMeTest()
         {
             bool? isRememberMeActive = myAccountPage.IsRememberMeChecked();
@@ -63,26 +52,38 @@ namespace NUnit_practice
         }
 
         [Test]
-        public void RegisterUsernameFieldTest()
-        {
-            string username = "some@username.com";
-            myAccountPage.EnterRegisterEmail(username);
-            Assert.That(myAccountPage.GetRegisterEmail(), Is.EqualTo(username));
-        }
-
-        [Test]
-        public void RegisterPasswordFieldTest()
-        {
-            string password = "pass#23@{a.";
-            myAccountPage.EnterLoginPassword(password);
-            Assert.That(myAccountPage.GetLoginPassword(), Is.EqualTo(password));
-        }
-
-        [Test]
         public void LostPasswordLinkTest()
         {
             myAccountPage.ClickLostPasswordLink();
             Assert.That(webDriver.Url, Is.EqualTo(LostPasswordURL));
+        }
+
+        [Test]
+        public void LostPasswordLinkTextTest()
+        {
+            string lostPasswordText = myAccountPage.LostPasswordLinkText();
+            Assert.That(lostPasswordText, Is.EqualTo(LostPasswordText));
+        }
+
+        [Test]
+        public void RememberMeLabelTextTest()
+        {
+            string rememberMeLabelText = myAccountPage.RememberMeCheckboxLabelText();
+            Assert.That(rememberMeLabelText, Is.EqualTo(RememberMeLabelText));
+        }
+
+        [Test]
+        public void LoginButtonTextTest()
+        {
+            string loginButtonText = myAccountPage.LoginButtonText();
+            Assert.That(loginButtonText, Is.EqualTo(LoginButtonText));
+        }
+
+        [Test]
+        public void RegisterButtonTextTest()
+        {
+            string registerButtonText = myAccountPage.RegisterButtonText();
+            Assert.That(registerButtonText, Is.EqualTo(RegisterButtonText));
         }
 
         [Test]

@@ -67,19 +67,24 @@ namespace NUnit_practice.PageObjects
         public IWebElement? ErrorMessage { get; set; }
 
 
-        public string? LostPasswordLinkText()
+        public string LostPasswordLinkText()
         {
             return GetElementText(LostPasswordLink);
         }
 
-        public string? RememberMeCheckboxLabelText()
+        public string RememberMeCheckboxLabelText()
         {
             return GetElementText(RememberMeLabel);
         }
 
-        public string? RegisterButtonText()
+        public string LoginButtonText()
         {
-            return GetElementText(RegisterButton);
+            return GetElementAttribute(LoginButton, "value");
+        }
+
+        public string RegisterButtonText()
+        {
+            return GetElementAttribute(RegisterButton, "value");
         }
 
         public MyAccountPage EnterLoginUsername(string username)
@@ -112,18 +117,6 @@ namespace NUnit_practice.PageObjects
             return this;
         }
 
-        public MyAccountPage EnterRegisterEmail(string email)
-        {
-            WriteToField(RegisterEmailField, email);
-            return this;
-        }
-
-        public MyAccountPage EnterRegisterPassword(string password)
-        {
-            WriteToField(RegisterPasswordField, password);
-            return this;
-        }
-
         public MyAccountPage LoginUser(string Username, string password)
         {
             EnterLoginUsername(Username);
@@ -132,35 +125,14 @@ namespace NUnit_practice.PageObjects
             return this;
         }
 
-        public string? GetLogInGreeting()
+        public string GetLogInGreeting()
         {
             return GetElementText(WelcomeMessage);
         }
 
-        public string? GetLoginUsername()
-        {
-            return GetElementAttribute(LoginUsernameField, "value");
-        }
-
-        public string? GetLoginPassword()
-        {
-            return GetElementAttribute(LoginPasswordField, "value");
-        }
-
-        public bool? IsRememberMeChecked()
+        public bool IsRememberMeChecked()
         {
             return IsElementSelected(RememberMeCheckbox);
-        }
-
-        public string? GetRegisterEmail()
-        {
-            return GetElementAttribute(RegisterEmailField, "value");
-        }
-
-        public string? GetRegisterPassword()
-        {
-            return GetElementAttribute(RegisterPasswordField, "value");
-
         }
 
         public string? GetErrorMessageText()
