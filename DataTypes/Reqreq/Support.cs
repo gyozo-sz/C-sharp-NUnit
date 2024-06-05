@@ -2,7 +2,7 @@
 
 namespace NUnit_practice.DataTypes
 {
-    public class Support
+    public class Support : ApiData
     {
         [JsonPropertyName("url")]
         public string Url { get; set; }

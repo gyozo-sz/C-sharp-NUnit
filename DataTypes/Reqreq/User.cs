@@ -1,8 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace NUnit_practice.DataTypes
 {
-    public class User
+    public class User : ApiData
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

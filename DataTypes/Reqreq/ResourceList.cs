@@ -3,7 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace NUnit_practice.DataTypes
 {
-    public class ResourceList<Resource>
+    public class ResourceList<Resource> : GetRequestResponse<List<Resource>> 
+        where Resource : class
     {
         [JsonPropertyName("page")]
         public int Page { get; set; }
@@ -17,15 +18,5 @@ namespace NUnit_practice.DataTypes
         [JsonPropertyName("total_pages")]
         public int TotalPages { get; set; }
 
-        [JsonPropertyName("data")]
-        public List<Resource> Data { get; set; }
-
-        [JsonPropertyName("support")]
-        public Support Support { get; set; }
-
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
     }
 }

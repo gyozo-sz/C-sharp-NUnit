@@ -1,14 +1,13 @@
 ﻿using RestSharp;
 using SpecFlow.Internal.Json;
+using System.Data.Common;
+using System.Diagnostics;
+using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
 namespace NUnit_practice.Rest
 {
-    public static class RestRequestExtension
-    {
-        
-    }
-
     public class IncompleteRequestException : Exception
     {
         public IncompleteRequestException()
@@ -32,6 +31,8 @@ namespace NUnit_practice.Rest
         private const int TimeoutSeconds = 1;
         private RestRequest? _request;
 
+        public int LastResponseTime { get; private set; }
+
         public RestConnection(string url, RestClientOptions? restClientOptions = null) { 
             if (restClientOptions == null)
             {
@@ -49,9 +50,15 @@ namespace NUnit_practice.Rest
         {
             _request = new RestRequest(endpoint, method);
             if (body != null)
-            {
+            { 
+                _request.AddOrUpdateHeader("Content-Type", "application/json");
                 _request.AddBody(body);
             }
+        }
+
+        public void AddQueryParameter(string name, string value)
+        {
+            _request!.AddQueryParameter(name, value);
         }
 
         public void AddHeader(string name, string value)
@@ -63,27 +70,20 @@ namespace NUnit_practice.Rest
             _request.AddHeader(name, value);
         }
 
-        public string? SendRequest()
+        public RestResponse? SendRequest()
         {
             if (_request == null)
             {
                 throw new IncompleteRequestException("Request was not initialized before sending");
             }
-            Console.WriteLine("Sent request: {0}", RequestToString());
-            RestResponse response = _client.GetAsync(_request).GetAwaiter().GetResult();
-            Console.WriteLine("Response contents: {0}", response);
-            return response.Content;
-        }
 
-        public T? SendRequest<T>()
-        {
-            if (_request == null)
-            {
-                throw new IncompleteRequestException("Request was not initialized before sending");
-            }
-            Console.WriteLine("Sent request: {0}", RequestToString());
-            T? response = _client.GetAsync<T>(_request).GetAwaiter().GetResult();
-            Console.WriteLine("Response contents: {0}", response);
+            Stopwatch sw = Stopwatch.StartNew();
+            Console.WriteLine("Request contents: {0}", RequestToString());
+            RestResponse response = _client.ExecuteAsync(_request).GetAwaiter().GetResult();
+            sw.Stop();
+
+            Console.WriteLine("Response contents: {0}", response.Content);
+            LastResponseTime = (int)sw.Elapsed.TotalMilliseconds;
             return response;
         }
 
@@ -93,7 +93,20 @@ namespace NUnit_practice.Rest
             {
                 return "";
             }
-            return $"{{Method: {_request.Method}, Resource: {_request.Resource} }}";
+            var parameters = _request.Parameters.Select(parameter => new
+            {
+                name = parameter.Name,
+                value = parameter.Value,
+                type = parameter.Type.ToString()
+            });
+
+            string parameterString = "";
+            foreach (var parameter in parameters)
+            {
+                parameterString += parameter.ToString();
+            }
+
+            return $"{{Method: {_request.Method}, Resource: {_request.Resource}, Body: {parameterString} }}";
         }
 
         public void AddStringBody(string jsonBody) {
@@ -102,6 +115,22 @@ namespace NUnit_practice.Rest
                 throw new IncompleteRequestException("Request was not initialized before sending");
             }
             _request.AddStringBody(jsonBody, ContentType.Json);
+        }
+
+        public static int GetResponseStatusCode(RestResponse response)
+        {
+            HttpStatusCode statusCode = response.StatusCode;
+            return (int)statusCode;
+        }
+
+        public static Method ParseHttpMethodString(string method)
+        {
+            return (method) switch
+            {
+                "GET" => Method.Get,
+                "POST" => Method.Post,
+                _ => Method.Get
+            };
         }
     }
 }
