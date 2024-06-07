@@ -36,7 +36,7 @@ namespace EntityPractice
         public static void PrintDatabaseContent(int? postId = null)
         {
             using BloggingContext db = new();
-            var posts = (from post in db.Posts.Include(p => p.Blog) select post).ToList();
+            var posts = db.Posts.Include(p => p.Blog).ToList();
             if (postId != null)
             {
                 posts = posts.Where(p => p.PostId == postId).ToList();
@@ -95,7 +95,7 @@ namespace EntityPractice
 
             using (BloggingContext db = new())
             {
-                var firstPost = (from post in db.Posts select post).FirstOrDefault();
+                var firstPost = db.Posts.FirstOrDefault();
                 if (firstPost != null)
                 {
                     firstPost.Title = "Entity Framework revolutionizes DB access";
@@ -110,7 +110,7 @@ namespace EntityPractice
 
             using (BloggingContext db = new())
             {
-                var firstPost = (from post in db.Posts select post).FirstOrDefault();
+                var firstPost = db.Posts.FirstOrDefault();
                 if (firstPost != null)
                 {
                     db.Posts.Remove(firstPost);
