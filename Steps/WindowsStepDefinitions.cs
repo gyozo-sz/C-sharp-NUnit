@@ -1,5 +1,4 @@
-﻿using BoDi;
-using NUnit_practice.PageObjects.WindowsCategory;
+﻿using NUnit_practice.PageObjects.WindowsCategory;
 
 namespace NUnit_practice.Steps
 {
@@ -9,10 +8,10 @@ namespace NUnit_practice.Steps
         private readonly SamplePage _samplePage;
         private readonly WindowsPage _windowsPage;
 
-        public WindowsStepDefinitions(IObjectContainer container, ScenarioContext scenarioContext)
+        public WindowsStepDefinitions(ScenarioContext scenarioContext)
         {
-            _windowsPage = new(container, scenarioContext);
-            _samplePage = new(container, scenarioContext);
+            _windowsPage = new(scenarioContext);
+            _samplePage = new(scenarioContext);
         }
 
         [When(@"I click the (.*) button")]

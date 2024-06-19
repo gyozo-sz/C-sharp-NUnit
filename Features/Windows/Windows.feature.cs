@@ -10,11 +10,10 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace NUnit_practice.Features.Elements
+// Generation customised by SpecFlow.Contrib.Variants
+namespace NUnit_practice.Features.Windows
 {
     using TechTalk.SpecFlow;
-    using System;
-    using System.Linq;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
@@ -27,9 +26,6 @@ namespace NUnit_practice.Features.Elements
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "Windows"};
-        
 #line 1 "Windows.feature"
 #line hidden
         
@@ -37,7 +33,8 @@ namespace NUnit_practice.Features.Elements
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Elements", "Windows", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-GB"), "Features/Windows", "Windows", "A short summary of the feature", ProgrammingLanguage.CSharp, new string[] {
+                        "Windows"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -49,39 +46,35 @@ namespace NUnit_practice.Features.Elements
         }
         
         [NUnit.Framework.SetUpAttribute()]
-        public void TestInitialize()
+        public virtual void TestInitialize()
         {
         }
         
         [NUnit.Framework.TearDownAttribute()]
-        public void TestTearDown()
+        public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<NUnit.Framework.TestContext>(NUnit.Framework.TestContext.CurrentContext);
         }
         
-        public void ScenarioStart()
+        public virtual void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public void ScenarioCleanup()
+        public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Handling the case when new window is opened")]
-        [NUnit.Framework.CategoryAttribute("NewWindow")]
-        [NUnit.Framework.CategoryAttribute("NewTab")]
-        [NUnit.Framework.TestCaseAttribute("New Tab", null)]
-        [NUnit.Framework.TestCaseAttribute("New Window", null)]
-        public void HandlingTheCaseWhenNewWindowIsOpened(string buttonLabel, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("New Tab", null, TestName="HandlingTheCaseWhenNewWindowIsOpened with \"New Tab\"")]
+        [NUnit.Framework.TestCaseAttribute("New Window", null, TestName="HandlingTheCaseWhenNewWindowIsOpened with \"New Window\"")]
+        public virtual void HandlingTheCaseWhenNewWindowIsOpened(string buttonLabel, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "NewWindow",
@@ -90,30 +83,14 @@ namespace NUnit_practice.Features.Elements
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("buttonLabel", buttonLabel);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Handling the case when new window is opened", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 8
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 9
- testRunner.Given("I navigated to the Browser Windows section in the Windows category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 10
- testRunner.When(string.Format("I click the {0} button", buttonLabel), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 11
- testRunner.Then("Sample page is opened in new window", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Handling the case when new window is opened", null, @__tags, argumentsOfScenario);
+            this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+            testRunner.Given("I navigated to the Browser Windows section in the Windows category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.When(string.Format("I click the {0} button", buttonLabel), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.Then("Sample page is opened in new window", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
             this.ScenarioCleanup();
         }
     }

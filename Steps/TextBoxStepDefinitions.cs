@@ -1,5 +1,4 @@
 using TechTalk.SpecFlow.Assist;
-using BoDi;
 using NUnit_practice.DataClasses;
 using NUnit_practice.PageObjects.Elements;
 
@@ -11,9 +10,9 @@ namespace NUnit_practice.Steps
         private readonly TextBoxPage _textBoxPage;
         private TextBoxData _textBoxData;
 
-        public TextBoxStepDefinitions(IObjectContainer objectContainer, ScenarioContext scenarioContext)
+        public TextBoxStepDefinitions(ScenarioContext scenarioContext)
         {
-            _textBoxPage = new(objectContainer, scenarioContext);
+            _textBoxPage = new(scenarioContext);
             _textBoxData = new();
         }
 

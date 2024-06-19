@@ -10,11 +10,10 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
+// Generation customised by SpecFlow.Contrib.Variants
 namespace NUnit_practice.Features.Elements
 {
     using TechTalk.SpecFlow;
-    using System;
-    using System.Linq;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
@@ -28,10 +27,6 @@ namespace NUnit_practice.Features.Elements
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "Elements",
-                "TextBox"};
-        
 #line 1 "TextBox.feature"
 #line hidden
         
@@ -39,7 +34,9 @@ namespace NUnit_practice.Features.Elements
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Elements", "TextBox", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-GB"), "Features/Elements", "TextBox", "Tests for the textbox elements", ProgrammingLanguage.CSharp, new string[] {
+                        "Elements",
+                        "TextBox"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -51,81 +48,59 @@ namespace NUnit_practice.Features.Elements
         }
         
         [NUnit.Framework.SetUpAttribute()]
-        public void TestInitialize()
+        public virtual void TestInitialize()
         {
         }
         
         [NUnit.Framework.TearDownAttribute()]
-        public void TestTearDown()
+        public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<NUnit.Framework.TestContext>(NUnit.Framework.TestContext.CurrentContext);
         }
         
-        public void ScenarioStart()
+        public virtual void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public void ScenarioCleanup()
+        public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
         
         public virtual void FeatureBackground()
         {
-#line 7
-#line hidden
-#line 8
- testRunner.Given("I navigated to the Text Box section in the Elements category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
+            testRunner.Given("I navigated to the Text Box section in the Elements category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Submit text box values")]
-        public void SubmitTextBoxValues()
+        public virtual void SubmitTextBoxValues()
         {
-            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Submit text box values", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 10
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 7
-this.FeatureBackground();
-#line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                            "FullName",
-                            "Email",
-                            "CurrentAddress",
-                            "PermanentAddress"});
-                table1.AddRow(new string[] {
-                            "Sherlock Holmes",
-                            "sherlock@holmes.com",
-                            "London, Big Ben",
-                            "London, 221B Baker Street"});
-#line 11
- testRunner.When("I enter the following data into the text fields", ((string)(null)), table1, "When ");
-#line hidden
-#line 14
-  testRunner.And("Click the Submit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 15
- testRunner.Then("Output table appears echoing the entered data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Submit text box values", null, ((string[])(null)), argumentsOfScenario);
+            this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+            this.FeatureBackground();
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FullName",
+                        "Email",
+                        "CurrentAddress",
+                        "PermanentAddress"});
+            table1.AddRow(new string[] {
+                        "Sherlock Holmes",
+                        "sherlock@holmes.com",
+                        "London, Big Ben",
+                        "London, 221B Baker Street"});
+            testRunner.When("I enter the following data into the text fields", ((string)(null)), table1, "When ");
+            testRunner.And("Click the Submit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.Then("Output table appears echoing the entered data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
             this.ScenarioCleanup();
         }
     }

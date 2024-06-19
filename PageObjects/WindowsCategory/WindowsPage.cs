@@ -1,15 +1,14 @@
-﻿using BoDi;
-using NUnit_practice.PageObjects.Utils;
+﻿using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
 
 namespace NUnit_practice.PageObjects.WindowsCategory
 {
     internal class WindowsPage : CategoryPage
     {
-        public WindowsPage(IObjectContainer objectContainer, ScenarioContext scenarioContext) : base(objectContainer, scenarioContext)
+        public WindowsPage(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
-            var context = objectContainer.Resolve<PageContext>("Context");
-            PageFactory.InitElements(context.Driver, this);
+            PageFactory.InitElements(Context.Driver, this);
         }
 
         [FindsBy(How = How.CssSelector, Using = "button#tabButton")]
@@ -17,12 +16,5 @@ namespace NUnit_practice.PageObjects.WindowsCategory
 
         [FindsBy(How = How.CssSelector, Using = "button#windowButton")]
         public IWebElement? NewWindowButton;
-
-        public SamplePage ClickNewTabButton()
-        {
-            ClickElement(NewTabButton);
-            SwitchToNewTabOrWindow(GetWindowHandle());
-            return new(_container, _scenarioContext);
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BoDi;
+﻿
 using NUnit_practice.DataClasses;
 using NUnit_practice.Hooks;
 using OpenQA.Selenium.Support.UI;
@@ -8,17 +8,19 @@ namespace NUnit_practice.PageObjects.Utils
     internal class PageObjectBase
     {
         private const string OriginalWindowKey = "OriginalWindow";
-        protected readonly PageContext Context;
+        protected PageContext Context { 
+            get
+            {
+                return (_scenarioContext["Context"] as PageContext) ?? new PageContext(_scenarioContext);
+            }
+        }
         private const int MaxWaitSeconds = 5;
         private readonly By AdsLocator = By.XPath("//*[contains(@class, 'google') or contains(@id, 'google')]");
         protected ScenarioContext _scenarioContext;
-        protected IObjectContainer _container;
 
-        public PageObjectBase(IObjectContainer objectContainer, ScenarioContext scenarioContext)
+        public PageObjectBase(ScenarioContext scenarioContext)
         {
-            Context = objectContainer.Resolve<PageContext>("Context");
             _scenarioContext = scenarioContext;
-            _container = objectContainer;
         }
 
         public bool IsHomePage()
@@ -26,7 +28,7 @@ namespace NUnit_practice.PageObjects.Utils
             return Context.Driver.Url == ScenarioHooks.DefaultPage;
         }
 
-        public static Func<IWebDriver, IWebElement> ElementIsVisible(IWebElement? element)
+        public static Func<IWebDriver, IWebElement?> ElementIsVisible(IWebElement? element)
         {
             return (driver) =>
             {
@@ -51,7 +53,7 @@ namespace NUnit_practice.PageObjects.Utils
         public IWebElement WaitForVisibility(IWebElement? element, int maxWaitSeconds = MaxWaitSeconds)
         {
             var wait = new WebDriverWait(Context.Driver, TimeSpan.FromSeconds(maxWaitSeconds));
-            return wait.Until(ElementIsVisible(element));
+            return wait.Until(ElementIsVisible(element))!;
         }
 
         public IWebElement WaitForElementLoad(By locator, int maxWaitSeconds = MaxWaitSeconds)
@@ -212,7 +214,7 @@ namespace NUnit_practice.PageObjects.Utils
                 // Could throw exception, but no need in this case
                 return;
             }
-            string originalWindowKey = _scenarioContext[OriginalWindowKey].ToString();
+            string originalWindowKey = _scenarioContext[OriginalWindowKey].ToString()!;
             string newWindowHandle = Context.Driver.WindowHandles.SkipWhile(handle => handle != originalWindowKey).First();
             Context.Driver.SwitchTo().Window(newWindowHandle);
         }

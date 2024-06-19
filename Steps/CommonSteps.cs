@@ -1,22 +1,26 @@
-﻿using BoDi;
-
-namespace NUnit_practice.Steps
+﻿namespace NUnit_practice.Steps
 {
     [Binding]
     public class CommonSteps
     {
-        private readonly IObjectContainer _container;
-        public CommonSteps(IObjectContainer container)
+        private readonly ScenarioContext _scenarioContext;
+        public CommonSteps(ScenarioContext scenarioContext)
         {
-            _container = container;
+            _scenarioContext = scenarioContext;
         }
 
         [Then(@"The page body contains title text '([^']*)'")]
         public void ThenThePageBodyContainsTitleText(string expectedHeaderText)
         {
-            IWebDriver driver = _container.Resolve<PageContext>("Context").Driver;
-            IWebElement headerText =  driver.FindElement(By.TagName("h1"));
-            Assert.That(headerText.Text, Is.EqualTo(expectedHeaderText));
+            if (_scenarioContext["Context"] as PageContext is PageContext pageContext)
+            {
+                IWebElement headerText = pageContext.Driver.FindElement(By.TagName("h1"));
+                Assert.That(headerText.Text, Is.EqualTo(expectedHeaderText));
+            }
+            else
+            {
+                throw new ArgumentException("Page Context is not initialized");
+            }
         }
 
     }

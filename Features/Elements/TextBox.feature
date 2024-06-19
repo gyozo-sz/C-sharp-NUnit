@@ -2,7 +2,7 @@
 @TextBox
 Feature: TextBox
 
-A short summary of the feature
+Tests for the textbox elements
 
 Background: 
 	Given I navigated to the Text Box section in the Elements category

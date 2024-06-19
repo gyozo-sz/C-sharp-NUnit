@@ -1,34 +1,39 @@
 ﻿using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Interactions;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
 
 namespace NUnit_practice
 {
     public class PageContext
     {
-        public PageContext()
+        const string DriversDirectoryRelativePath = "Drivers/";
+
+        public PageContext(ScenarioContext scenarioContext)
         {
-            Environment.SetEnvironmentVariable("browser", "chrome");
-            string? browserEnv = Environment.GetEnvironmentVariable("browser");
+            scenarioContext.TryGetValue("Browser", out var browserEnv);
+            Console.WriteLine(browserEnv);
             switch (browserEnv)
             {
-                case "chrome":
+                case "Chrome":
+                    new DriverManager().SetUpDriver(new ChromeConfig());
                     Driver = new ChromeDriver();
                     break;
-                case "firefox":
-                    var driverService = FirefoxDriverService.CreateDefaultService(@"C:\Users\gyozo.szabo\Desktop\WebDrivers", "geckodriver.exe");
-                    driverService.FirefoxBinaryPath = @"C:\Users\gyozo.szabo\AppData\Local\Mozilla Firefox\firefox.exe";
-                    Driver = new FirefoxDriver(driverService);
+                case "Firefox":
+                    new DriverManager().SetUpDriver(new FirefoxConfig());
+                    Driver = new FirefoxDriver();
                     break;
-                case "edge":
+                case "Edge":
+                    new DriverManager().SetUpDriver(new EdgeConfig());
                     Driver = new EdgeDriver();
                     break;
                 default:
                     Console.WriteLine($"Unknown browser specified: {browserEnv ?? "null"}. Defaulting to Chrome");
+                    new DriverManager().SetUpDriver(new ChromeConfig());
                     Driver = new ChromeDriver();
                     break;
             }
-            
             Actions = new Actions(Driver);
         }
 

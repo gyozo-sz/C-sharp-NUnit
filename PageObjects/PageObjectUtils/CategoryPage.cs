@@ -1,10 +1,8 @@
-﻿using BoDi;
-
-namespace NUnit_practice.PageObjects.Utils
+﻿namespace NUnit_practice.PageObjects.Utils
 {
     internal class CategoryPage : NavigationPage
     {
-        public CategoryPage(IObjectContainer objectContainer, ScenarioContext scenarioContext) 
-            : base(objectContainer, scenarioContext) { }
+        public CategoryPage(ScenarioContext scenarioContext)
+            : base(scenarioContext) { }
     }
 }

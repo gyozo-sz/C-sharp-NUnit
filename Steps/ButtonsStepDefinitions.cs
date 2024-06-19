@@ -1,4 +1,3 @@
-using BoDi;
 using NUnit_practice.DataClasses;
 using NUnit_practice.PageObjects.Elements;
 
@@ -10,9 +9,9 @@ namespace NUnit_practice.Steps
         private readonly ButtonsPage _buttonsPage;
         private readonly List<ClickType> _performedClicks;
 
-        public ButtonsStepDefinitions(IObjectContainer objectContainer, ScenarioContext scenarioContext)
+        public ButtonsStepDefinitions(ScenarioContext scenarioContext)
         {
-            _buttonsPage = new ButtonsPage(objectContainer, scenarioContext);
+            _buttonsPage = new ButtonsPage(scenarioContext);
             _performedClicks = new();
         }
 

@@ -1,5 +1,4 @@
-﻿using BoDi;
-using NUnit_practice.DataClasses;
+﻿using NUnit_practice.DataClasses;
 using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
 
@@ -8,10 +7,9 @@ namespace NUnit_practice.PageObjects.Elements
 {
     internal class ButtonsPage : CategoryPage
     {
-        public ButtonsPage(IObjectContainer objectContainer, ScenarioContext scenarioContext) : base(objectContainer, scenarioContext)
+        public ButtonsPage(ScenarioContext scenarioContext) : base(scenarioContext)
         {
-            var context = objectContainer.Resolve<PageContext>("Context");
-            PageFactory.InitElements(context.Driver, this);
+            PageFactory.InitElements(Context.Driver, this);
         }
 
         [FindsBy(How = How.CssSelector, Using = "button#doubleClickBtn")]

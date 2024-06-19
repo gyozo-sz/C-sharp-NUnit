@@ -1,16 +1,14 @@
-﻿using BoDi;
-using NUnit_practice.PageObjects.Utils;
+﻿using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
 
 namespace NUnit_practice.PageObjects.WindowsCategory
 {
     internal class SamplePage : CategoryPage
     {
-        public SamplePage(IObjectContainer objectContainer, ScenarioContext scenarioContext) :
-            base(objectContainer, scenarioContext)
+        public SamplePage(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
-            var context = objectContainer.Resolve<PageContext>("Context");
-            PageFactory.InitElements(context.Driver, this);
+            PageFactory.InitElements(Context.Driver, this);
         }
 
         [FindsBy(How = How.CssSelector, Using = "h1#sampleHeading")]

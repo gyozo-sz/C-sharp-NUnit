@@ -1,5 +1,4 @@
-﻿using BoDi;
-using NUnit_practice.PageObjects;
+﻿using NUnit_practice.PageObjects;
 using NUnit_practice.PageObjects.Utils;
 
 namespace NUnit_practice.Steps
@@ -10,10 +9,10 @@ namespace NUnit_practice.Steps
         private readonly NavigationPage _navigationPage;
         private readonly HomePage _homePage;
 
-        public NavigationStepDefinitions(IObjectContainer objectContainer, ScenarioContext scenarioContext)
+        public NavigationStepDefinitions(ScenarioContext scenarioContext)
         {
-            _homePage = new HomePage(objectContainer, scenarioContext);
-            _navigationPage = new NavigationPage(objectContainer, scenarioContext);
+            _homePage = new HomePage(scenarioContext);
+            _navigationPage = new NavigationPage(scenarioContext);
         }
 
         [Given(@"I navigated to the (.*) section in the (.*) category")]

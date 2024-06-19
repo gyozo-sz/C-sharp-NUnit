@@ -1,33 +1,44 @@
 ﻿using BoDi;
+using System.Reflection;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NUnit_practice.Hooks
 {
+    public class CustomFeatureContext
+    {
+        public int Counter { get; set; }
+    }
+
     // For additional details on SpecFlow hooks see http://go.specflow.org/doc-hooks
     [Binding]
     public class ScenarioHooks
     {
-        private readonly IObjectContainer _container;
         public const string DefaultPage = "https://demoqa.com/";
 
-        public ScenarioHooks(IObjectContainer objectContainer)
+        [BeforeFeature]
+        public static void InitializeFeatureContext(CustomFeatureContext featureContext)
         {
-            _container = objectContainer;
-            _container.RegisterInstanceAs(new PageContext(), "Context");
+            featureContext.Counter = 0;
         }
 
         [BeforeScenario(Order = 1)]
-        public void NavigateToPage()
+        public static void NavigateToPage(CustomFeatureContext featureContext, ScenarioContext scenarioContext)
         {
-            PageContext context = _container.Resolve<PageContext>("Context");
-            context.Driver.Navigate().GoToUrl(DefaultPage);
-            context.Driver.Manage().Window.Maximize();
+            PageContext pageContext = new(scenarioContext);
+            scenarioContext.Add("Context", pageContext);
+            pageContext.Driver.Navigate().GoToUrl(DefaultPage);
+            pageContext.Driver.Manage().Window.Maximize();
+            featureContext.Counter += 1;
+            Console.WriteLine("Counter: {0}", featureContext.Counter);
         }
 
         [AfterScenario]
-        public void CloseContext()
+        public static void CloseContext(ScenarioContext scenarioContext)
         {
-            PageContext context = _container.Resolve<PageContext>("Context");
-            context.Driver.Quit();
+            if (scenarioContext["Context"] as PageContext is PageContext context)
+            {
+                context.Driver.Quit();
+            }
         }
     }
 }

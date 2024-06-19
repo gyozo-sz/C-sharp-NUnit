@@ -1,15 +1,14 @@
-﻿using BoDi;
-using NUnit_practice.PageObjects.Utils;
+﻿using NUnit_practice.PageObjects.Utils;
 using SeleniumExtras.PageObjects;
 
 namespace NUnit_practice.PageObjects
 {
     internal class HomePage : PageObjectBase
     {
-        public HomePage(IObjectContainer objectContainer, ScenarioContext scenarioContext) : base(objectContainer, scenarioContext) 
+        public HomePage(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
-            var context = objectContainer.Resolve<PageContext>("Context");
-            PageFactory.InitElements(context.Driver, this);
+            PageFactory.InitElements(Context.Driver, this);
         }
 
         [FindsBy(How = How.XPath, Using = "//div[contains(@class, 'card-body')]/h5[contains(text(), 'Elements')]")]
@@ -23,7 +22,7 @@ namespace NUnit_practice.PageObjects
         public CategoryPage SelectMenuCard(string title)
         {
             ClickElement(MenuCard(title));
-            return new CategoryPage(_container, _scenarioContext);
+            return new CategoryPage(_scenarioContext);
         }
 
     }

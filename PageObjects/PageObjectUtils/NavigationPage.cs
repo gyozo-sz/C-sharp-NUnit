@@ -1,15 +1,13 @@
-﻿using BoDi;
-using SeleniumExtras.PageObjects;
+﻿using SeleniumExtras.PageObjects;
 
 namespace NUnit_practice.PageObjects.Utils
 {
     internal class NavigationPage : PageObjectBase
     {
-        public NavigationPage(IObjectContainer objectContainer, ScenarioContext scenarioContext) 
-            : base(objectContainer, scenarioContext)
+        public NavigationPage(ScenarioContext scenarioContext) 
+            : base(scenarioContext)
         {
-            var context = objectContainer.Resolve<PageContext>("Context");
-            PageFactory.InitElements(context.Driver, this);
+            PageFactory.InitElements(Context.Driver, this);
         }
 
         public static By NavigationCategoryByText(string text) => By.XPath($"//div[contains(@class, 'header-text') and contains(text(), '{text}')]");

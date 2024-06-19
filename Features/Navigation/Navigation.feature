@@ -1,7 +1,7 @@
 ﻿@Navigation
 Feature: Navigation
 
-A short summary of the feature
+Testing the navigation menu and their test methods
 
 @TextBox
 Scenario: I navigate to the Text Box section in the Elements Category
